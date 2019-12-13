@@ -1,6 +1,6 @@
-##My gulp v 1.0.0 :)
+<h1>My gulp v 1.0.0 :)</h1>
 
-###How to use
+<h3>How to use</h3>
 
 <pre>git clone https://github.com/xelinel32/gulp-combineer.git</pre>
 
@@ -10,7 +10,7 @@
 	<li>Run: <strong>gulp</strong></li>
 </ol>
 
-###Basic rules
+<h3>Basic rules</h3>
 
 <ol>
 	<li>All custom <strong title="scripts task"><em>scripts</em></strong> located in <strong>app/js/_custom.js</strong></li>
@@ -22,7 +22,7 @@
 	</li>
 </ol>
 
-###Included features
+<h3>Included features</h3>
 
 <ol>
     <li><a href="https://getbootstrap.com/docs/4.0/">bootstrap</a> - Bootstrap Reboot CSS collection</li>
