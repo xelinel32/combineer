@@ -18,13 +18,14 @@
 	<li>All Sass <strong>vars</strong> placed in <strong>app/sass/_vars.sass</strong></li>
 	<li>All <strong>fonts</strong> plug in <strong>app/sass/_fonts.sass</strong></li>
 	<li>All CSS styles of <strong>libraries</strong> plug in <strong>app/sass/_libs.sass</strong></li>
-	<li>All responsive <strong>images</strong> placed in <strong>app/img/_src/</strong> folder. All source images should initially have a 2x resolution. Result image folders after resize & compression: <strong>img/@1x/</strong> and <strong>img/@2x/</strong> accordingly.</li>
+	<li>All responsive <strong>images</strong> placed in <strong>app/img/_src/</strong> folder. All source images should initially have a 2x resolution. Result image folders after resize & compression: <strong>img/@1x/</strong> and <strong>img/@2x/</strong> accordingly.
+	</li>
 </ol>
 
 ###Included features
 
 <ol>
-	<li><a href="https://getbootstrap.com/docs/4.0/">bootstrap</a> - Bootstrap Reboot CSS collection</li>
+    <li><a href="https://getbootstrap.com/docs/4.0/">bootstrap</a> - Bootstrap Reboot CSS collection</li>
 	<li><a href="https://necolas.github.io/normalize.css/">Normilize</a> - A modern, HTML5-ready alternative to CSS resets</li>
     <li><a href="https://jquery.com/">JQuery</a> - jQuery is a fast, small, and feature-rich JavaScript library.</li>
 </ol>
