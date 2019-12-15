@@ -63,12 +63,12 @@ gulp.task('scripts', function() {
 });
 
 // Responsive Images
-var quality = 95; // Responsive images quality
+var quality = 90; // Responsive images quality
 
 // Produce @1x images
 gulp.task('img-responsive-1x', async function() {
   return gulp
-    .src('app/img/_src/**/*.{png,jpg,jpeg,webp,raw}')
+    .src('app/img/_src/**/*.{png,jpg,jpeg}')
     .pipe(newer('app/img/@1x'))
     .pipe(
       responsive({
@@ -89,7 +89,7 @@ gulp.task('img-responsive-1x', async function() {
 // Produce @2x images
 gulp.task('img-responsive-2x', async function() {
   return gulp
-    .src('app/img/_src/**/*.{png,jpg,jpeg,webp,raw}')
+    .src('app/img/_src/**/*.{png,jpg,jpeg}')
     .pipe(newer('app/img/@2x'))
     .pipe(
       responsive({

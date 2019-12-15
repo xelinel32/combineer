@@ -9,10 +9,8 @@
   "author": "Artemy",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "jquery": "^3.4.1",
-    "normalize.css": "^8.0.1",
     "bootstrap": "^4.4.1",
+    "browser-sync": "^2.26.7",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.0",
@@ -20,8 +18,10 @@
     "gulp-concat": "^2.6.1",
     "gulp-newer": "^1.4.0",
     "gulp-rename": "^1.4.0",
-    "gulp-responsive": "^2.14.0",
+    "gulp-responsive": "^3.0.1",
     "gulp-sass": "^4.0.2",
-    "gulp-uglify-es": "^1.0.4"
+    "gulp-uglify-es": "^1.0.4",
+    "jquery": "^3.4.1",
+    "sharp": "^0.23.4"
   }
 }
