@@ -21,7 +21,7 @@
     "gulp-newer": "^1.4.0",
     "gulp-rename": "^1.4.0",
     "sharp": "0.23.4",
-    "gulp-responsive": "^2.14.0",
+    "gulp-responsive": "^3.0.1",
     "gulp-sass": "^4.0.2",
     "gulp-uglify-es": "^1.0.4"
   }
