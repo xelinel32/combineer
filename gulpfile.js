@@ -36,7 +36,7 @@ gulp.task('styles', function() {
         includePaths: [__dirname + '/node_modules']
       })
     )
-    .pipe(concat('main.min.css'))
+    .pipe(concat('styles.min.css'))
     .pipe(
       autoprefixer({
         grid: true,
@@ -56,7 +56,7 @@ gulp.task('scripts', function() {
       'app/js/_libs.js', // JS libraries (all in one)
       'app/js/_custom.js' // Custom scripts. Always at the end
     ])
-    .pipe(concat('main.min.js'))
+    .pipe(concat('scripts.min.js'))
     .pipe(uglify()) // Minify js (opt.)
     .pipe(gulp.dest('app/js'))
     .pipe(browserSync.reload({ stream: true }));
