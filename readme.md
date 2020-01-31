@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <h1>My gulp v 1.0.0 :) 😃</h1>
+=======
+<h1>My gulp v 1.0.0 :) 😃(for develop)</h1>
+>>>>>>> gulp-dev-b
 
 <h3>How to use 👀</h3>
 

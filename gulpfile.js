@@ -32,7 +32,7 @@ gulp.task('styles', function() {
     .src('app/sass/**/*.sass', 'app/sass/**/*.scss')
     .pipe(
       sass({
-        outputStyle: 'expanded',
+        outputStyle: 'compressed',
         includePaths: [__dirname + '/node_modules']
       })
     )
@@ -40,7 +40,7 @@ gulp.task('styles', function() {
     .pipe(
       autoprefixer({
         grid: true,
-        overrideBrowserslist: ['last 10 versions']
+        overrideBrowserslist: ['last 2 versions']
       })
     )
     .pipe(cleancss({ level: { 1: { specialComments: 0 } } })) // Optional. Comment out when debugging
