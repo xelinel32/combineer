@@ -29,7 +29,7 @@ function bsReload(done) {
 // Custom Styles
 gulp.task('styles', function() {
   return gulp
-    .src('app/sass/**/*.sass', 'app/sass/**/*.scss')
+    .src(['app/sass/**/*.sass', 'app/sass/**/*.scss'])
     .pipe(
       sass({
         outputStyle: 'compressed',
