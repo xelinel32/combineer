@@ -1,6 +1,6 @@
 {
   "name": "gulp-combo",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "My gulp :)",
   "main": "index.js",
   "scripts": {
