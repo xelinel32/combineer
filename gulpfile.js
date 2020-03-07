@@ -22,17 +22,15 @@ function browsersync() {
   });
 }
 
-// Custom Styles
-gulp.task('styles', function() {
-  return gulp
-    .src(['app/sass/**/*.sass', 'app/sass/**/*.scss'])
-    .pipe(
-      sass({
-        outputStyle: 'compressed',
-        includePaths: [__dirname + '/node_modules']
-      })
-    )
-    .pipe(concat('styles.min.css'))
+// Custom Styles & CSS Libraries
+
+function styles() {
+  return src([
+    'app/' + preprocessor + '/main.*'
+    // 'node_modules/normalize.css/normalize.css'
+  ])
+    .pipe(eval(preprocessor)())
+    .pipe(concat('main.min.css'))
     .pipe(
       autoprefixer({ overrideBrowserslist: ['last 2 versions'], grid: true })
     )
