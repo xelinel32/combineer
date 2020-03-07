@@ -1,27 +1,26 @@
 {
-  "name": "gulp-combo",
-  "version": "3.0.0",
-  "description": "My gulp :)",
+  "name": "packfordev",
+  "version": "4.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Artemy",
+  "author": "Artemy(xelinel32)",
   "license": "ISC",
   "devDependencies": {
+    "jquery": "^3.4.1",
+    "normalize.css": "^8.0.1",
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.0",
+    "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^7.1.0",
     "gulp-newer": "^1.4.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-responsive": "^3.0.1",
+    "gulp-rsync": "0.0.8",
     "gulp-sass": "^4.0.2",
-    "gulp-uglify-es": "^1.0.4",
-    "jquery": "^3.4.1",
-    "normalize.css": "^8.0.1",
-    "sharp": "^0.23.4"
+    "gulp-uglify-es": "^2.0.0"
   }
 }

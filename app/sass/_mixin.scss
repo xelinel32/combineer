@@ -1,6 +1,0 @@
-// mixins
-$browser-context: 16; // Default em(16)
-
-@function em($pixels, $context: $browser-context) {
-  @return #{$pixels/$context}em;
-}
