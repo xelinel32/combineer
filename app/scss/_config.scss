@@ -3,7 +3,7 @@
 // USER VARIABLES SECTION
 $browser-context: 16; // Default em(16)
 $systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif; // System Font Family
-$globalfont: "Roboto", sans-serif; // Roboto Font Family
+$globalfont: 'Roboto', sans-serif; // Roboto Font Family
 
 // FONTS LOAD SECTION
 
@@ -20,7 +20,11 @@ $globalfont: "Roboto", sans-serif; // Roboto Font Family
 @include font('Roboto', normal, 400, '../fonts/roboto-regular-webfont.woff2');
 @include font('Roboto', normal, 500, '../fonts/roboto-italic-webfont.woff2');
 @include font('Roboto', normal, 700, '../fonts/roboto-bold-webfont.woff2');
-@include font('Roboto', normal, 900, '../fonts/roboto-bolditalic-webfont.woff2'
+@include font(
+  'Roboto',
+  normal,
+  900,
+  '../fonts/roboto-bolditalic-webfont.woff2'
 );
 
 // GENERAL DOCUMENT STYLE SECTION
@@ -60,7 +64,6 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
-  vertical-align: middle;
   border-style: none;
 }
 svg {
