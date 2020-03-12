@@ -1,4 +1,4 @@
-<h1>My gulp v 3.0.2 :) 😃</h1>
+<h1>My gulp v 3.0.4 :) 😃</h1>
 
 <h3>How to use 👀</h3>
 
@@ -6,7 +6,7 @@
 
 <ol>
 	<li>Clone or <a href="https://github.com/xelinel32/gulp-combineer.git">Download</a> <strong>my rep</strong> from GitHub</li>
-	<li>Install Node Modules: <strong>npm install</strong></li>
+	<li>Install Node Modules: <strong>npm i</strong></li>
 	<li>Run: <strong>gulp</strong> 😎</li>
 </ol>
 
