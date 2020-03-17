@@ -4,6 +4,7 @@
   "description": "The gulp combineer for develop",
   "main": "index.js",
   "scripts": {
+    "dev": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artemy(xelinel32)",
