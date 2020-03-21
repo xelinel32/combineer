@@ -14,6 +14,7 @@ const newer = require('gulp-newer');
 const del = require('del');
 const fontconvert = require('gulp-ttf2woff2');
 const htmlmin = require('gulp-htmlmin');
+const sourcemaps = require('gulp-sourcemaps');
 
 // Local Server
 
@@ -26,31 +27,42 @@ function browsersync() {
 
 // Font Converter ttf to woff2
 
-function fconvert(){
-    return src('app/fonts/*.ttf')
-      .pipe(fontconvert())
-      .pipe(dest('app/fonts/dest'));
+function fconvert() {
+  return src('app/fonts/*.ttf')
+    .pipe(fontconvert())
+    .pipe(dest('app/fonts/dest'));
 }
 
 // HTML Minify
 
-function htmlpress(){
-    return src('app/*.html')
-      .pipe(htmlmin({ collapseWhitespace: true, useShortDoctype: true}))
-      .pipe(concat('output.html'))
-      .pipe(dest('app'));
+function htmlpress() {
+  return src('app/**/*.html')
+    .pipe(htmlmin({ collapseWhitespace: true, useShortDoctype: true }))
+    .pipe(dest('assets'));
 }
 
 // Custom Styles & CSS Libraries
 
 function styles() {
   return src('app/' + preprocessor + '/main.scss')
+    .pipe(sourcemaps.init())
     .pipe(eval(preprocessor)())
     .pipe(concat('style.min.css'))
     .pipe(
-      autoprefixer({ overrideBrowserslist: ['last 2 versions'], grid: true, cascade: false })
+      scss({
+        outputStyle: 'compressed',
+        imagePaths: '/img/dest/'
+      })
     )
-    .pipe(cleancss({ level: { 1: { specialComments: 0 } } }))
+    .pipe(
+      autoprefixer({
+        overrideBrowserslist: ['last 2 versions'],
+        grid: true,
+        cascade: false
+      })
+    )
+    .pipe(cleancss({ level: { 2: { specialComments: 0 } }, sourceMap: true }))
+    .pipe(sourcemaps.write('./'))
     .pipe(dest('app/css'))
     .pipe(browserSync.stream());
 }
@@ -58,17 +70,16 @@ function styles() {
 // Scripts & JS Libraries
 
 function scripts() {
-  return src([
-    './node_modules/jquery/dist/jquery.min.js', // example (npm i --save-dev plugin)
-    'app/js/common.js'
-  ])
+  return src(['node_modules/jquery/dist/jquery.js', 'app/script/common.js'])
+    .pipe(sourcemaps.init())
     .pipe(concat('common.min.js'))
     .pipe(
       uglify({
         toplevel: true
       })
     ) // Minify JS (opt.)
-    .pipe(dest('app/js'))
+    .pipe(sourcemaps.write('./', { addComment: false }))
+    .pipe(dest('app/script'))
     .pipe(browserSync.stream());
 }
 
@@ -82,14 +93,14 @@ function images() {
 }
 
 function cleanimg() {
-  return del('build/img/dest/**/*',  { force: true });
+  return del('build/img/dest/**/*', { force: true });
 }
 
 // Watching
 
 function startwatch() {
   watch('app/' + preprocessor + '/**/*', parallel('styles'));
-  watch(['app/**/*.js', '!app/js/*.min.js'], parallel('scripts'));
+  watch(['app/**/*.js', '!app/script/*.min.js'], parallel('scripts'));
   watch(['app/**/*.{' + imageswatch + '}'], parallel('images'));
   watch(['./*.{' + fileswatch + '}']).on('change', browserSync.reload);
 }
@@ -102,4 +113,12 @@ exports.images = images;
 exports.htmlpress = htmlpress;
 exports.fconvert = fconvert;
 exports.cleanimg = cleanimg;
-exports.default = parallel(images, htmlpress, fconvert, styles, scripts, browsersync, startwatch);
+exports.default = parallel(
+  images,
+  htmlpress,
+  fconvert,
+  styles,
+  scripts,
+  browsersync,
+  startwatch
+);
