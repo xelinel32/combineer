@@ -13,7 +13,6 @@ const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const del = require('del');
 const fontconvert = require('gulp-ttf2woff2');
-const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require('gulp-sourcemaps');
 
 // Local Server
@@ -31,14 +30,6 @@ function fconvert() {
   return src('app/fonts/*.ttf')
     .pipe(fontconvert())
     .pipe(dest('app/fonts/dest'));
-}
-
-// HTML Minify
-
-function htmlpress() {
-  return src('app/**/*.html')
-    .pipe(htmlmin({ collapseWhitespace: true, useShortDoctype: true }))
-    .pipe(dest('assets'));
 }
 
 // Custom Styles & CSS Libraries
@@ -79,7 +70,7 @@ function scripts() {
       })
     ) // Minify JS (opt.)
     .pipe(sourcemaps.write('./', { addComment: false }))
-    .pipe(dest('app/script'))
+    .pipe(dest('app/js'))
     .pipe(browserSync.stream());
 }
 
@@ -106,19 +97,10 @@ function startwatch() {
 }
 
 exports.browsersync = browsersync;
-exports.assets = series(cleanimg, fconvert, htmlpress, styles, scripts, images);
+exports.assets = series(cleanimg, fconvert, styles, scripts, images);
 exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
-exports.htmlpress = htmlpress;
 exports.fconvert = fconvert;
 exports.cleanimg = cleanimg;
-exports.default = parallel(
-  images,
-  htmlpress,
-  fconvert,
-  styles,
-  scripts,
-  browsersync,
-  startwatch
-);
+exports.default = parallel(images, fconvert, styles, scripts, browsersync, startwatch);
