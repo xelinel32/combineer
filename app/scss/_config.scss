@@ -1,17 +1,7 @@
-// IMPORT SECTION(font/plugin and more)
-@import 'node_modules/reset-css/sass/reset';
-// USER VARIABLES SECTION
-$browser-context: 16; // write em(16)
-$globalfont: 'Roboto', sans-serif; // page font family!
-
-// CONVERT TO EM
-
-@function em($pixels, $context: $browser-context) {
-  @return #{$pixels/$context}em;
-}
-
-// FONTS LOAD SECTION
-
+// section for imports
+// default font
+$globalfont: 'Roboto', sans-serif; // font document
+// connect fonts
 @mixin font($fname, $fstyle, $fweight, $furl) {
   @font-face {
     font-family: $fname;
@@ -21,13 +11,11 @@ $globalfont: 'Roboto', sans-serif; // page font family!
     src: local($fname), url($furl) format('woff2');
   }
 }
-
 @include font('Roboto', normal, 400, '../fonts/roboto-regular-webfont.woff2');
 @include font('Roboto', italic, 400, '../fonts/roboto-italic-webfont.woff2');
 @include font('Roboto', normal, 700, '../fonts/roboto-bold-webfont.woff2');
 @include font('Roboto', italic, 700, '../fonts/roboto-bolditalic-webfont.woff2');
-
-// GENERAL DOCUMENT STYLE SECTION
+// default layout settings
 *,
 *::after,
 *::before {
@@ -35,66 +23,28 @@ $globalfont: 'Roboto', sans-serif; // page font family!
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  font-weight: normal;
 }
-ul {
-  list-style: none;
-}
-a {
-  text-decoration: none;
-  color: #000;
-  display: inline-block;
-}
-a,
-button,
-input,
-textarea,
-optgroup,
-select {
-  border: none;
-  box-shadow: none;
-  border-radius: 0;
-  outline: none;
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  word-wrap: normal;
-}
-body,
-html {
+body {
   color: #000;
   font-weight: normal;
   font-style: normal;
   font-family: $globalfont;
+  font-size: 100%;
 }
 img {
   display: block;
   max-width: 100%;
   height: auto;
-  border-style: none;
 }
-svg {
-  overflow: hidden;
-  vertical-align: middle;
-}
-table {
-  border-collapse: collapse;
-}
-pre {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  overflow: auto;
-}
-figure {
-  margin: 0 0 1rem;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type='number'] {
-  -moz-appearance: textfield;
+// This section for interface elements document
+.container {
+  max-width: 1170px; // width - padding right and left
+  min-width: 320px;
+  width: 100%;
+  padding: 0 15px; // padding
+  margin: 0 auto;
+  position: relative;
 }
 .wrapper {
   overflow: hidden;
@@ -105,12 +55,20 @@ input[type='number'] {
 .footer {
   margin-top: auto;
 }
-.container {
-  max-width: 1170px;
-  min-width: 320px;
-  width: 100%;
-  padding: 0 15px;
-  margin: 0 auto;
-  position: relative;
+ul {
+    list-style: none;
 }
-
+a {
+  text-decoration: none;
+  color: #000;
+  display: inline-block;
+}
+a,
+button,
+input,
+textarea {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  outline: none;
+}
