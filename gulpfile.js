@@ -35,7 +35,7 @@ function fconvert() {
 // Custom Styles & CSS Libraries
 
 function styles() {
-  return src('app/' + preprocessor + '/main.scss')
+  return src('app/' + preprocessor + '/style.scss')
     .pipe(sourcemaps.init())
     .pipe(eval(preprocessor)())
     .pipe(concat('style.min.css'))
