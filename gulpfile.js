@@ -91,9 +91,9 @@ function cleanimg() {
 
 function startwatch() {
   watch('app/' + preprocessor + '/**/*', parallel('styles'));
-  watch(['app/**/*.js', '!app/script/*.min.js'], parallel('scripts'));
+  watch(['app/**/*.js', '!app/js/*.min.js'], parallel('scripts'));
   watch(['app/**/*.{' + imageswatch + '}'], parallel('images'));
-  watch(['./*.{' + fileswatch + '}']).on('change', browserSync.reload);
+  watch(['app/**/*.{' + fileswatch + '}']).on('change', browserSync.reload);
 }
 
 exports.browsersync = browsersync;
