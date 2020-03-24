@@ -1,12 +1,7 @@
-// IMPORT SECTION(font/plugin and more)
-
-// USER VARIABLES SECTION
-$browser-context: 16; // Default em(16)
-$systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif; // System Font Family
-$globalfont: "Roboto", sans-serif; // Roboto Font Family
-
-// FONTS LOAD SECTION
-
+// section for imports
+// default font
+$globalfont: 'Roboto', sans-serif; // font document
+// connect fonts
 @mixin font($fname, $fstyle, $fweight, $furl) {
   @font-face {
     font-family: $fname;
@@ -16,14 +11,11 @@ $globalfont: "Roboto", sans-serif; // Roboto Font Family
     src: local($fname), url($furl) format('woff2');
   }
 }
-
 @include font('Roboto', normal, 400, '../fonts/roboto-regular-webfont.woff2');
-@include font('Roboto', normal, 500, '../fonts/roboto-italic-webfont.woff2');
+@include font('Roboto', italic, 400, '../fonts/roboto-italic-webfont.woff2');
 @include font('Roboto', normal, 700, '../fonts/roboto-bold-webfont.woff2');
-@include font('Roboto', normal, 900, '../fonts/roboto-bolditalic-webfont.woff2'
-);
-
-// GENERAL DOCUMENT STYLE SECTION
+@include font('Roboto', italic, 700, '../fonts/roboto-bolditalic-webfont.woff2');
+// default layout settings
 *,
 *::after,
 *::before {
@@ -31,9 +23,40 @@ $globalfont: "Roboto", sans-serif; // Roboto Font Family
   padding: 0;
   box-sizing: border-box;
   outline: none;
+  font-weight: normal;
+}
+body {
+  color: #000;
+  font-weight: normal;
+  font-style: normal;
+  font-family: $globalfont;
+  font-size: 100%;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+// This section for interface elements document
+.container {
+  max-width: 1170px; // width - padding right and left
+  min-width: 320px;
+  width: 100%;
+  padding: 0 15px; // padding
+  margin: 0 auto;
+  position: relative;
+}
+.wrapper {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.footer {
+  margin-top: auto;
 }
 ul {
-  list-style: none;
+    list-style: none;
 }
 a {
   text-decoration: none;
@@ -48,156 +71,4 @@ textarea {
   box-shadow: none;
   border-radius: 0;
   outline: none;
-}
-body,
-html {
-  color: #000;
-  font-weight: normal;
-  font-style: normal;
-  font-family: $globalfont;
-}
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
-  border-style: none;
-}
-svg {
-  overflow: hidden;
-  vertical-align: middle;
-}
-table {
-  border-collapse: collapse;
-}
-button,
-input,
-optgroup,
-select,
-textarea {
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-pre {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  overflow: auto;
-}
-figure {
-  margin: 0 0 1rem;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-select {
-  word-wrap: normal;
-}
-[type='button'],
-[type='reset'],
-[type='submit'],
-button {
-  -webkit-appearance: button;
-}
-[type='button']:not(:disabled),
-[type='reset']:not(:disabled),
-[type='submit']:not(:disabled),
-button:not(:disabled) {
-  cursor: pointer;
-}
-[type='button']::-moz-focus-inner,
-[type='reset']::-moz-focus-inner,
-[type='submit']::-moz-focus-inner,
-button::-moz-focus-inner {
-  padding: 0;
-  border-style: none;
-}
-input[type='checkbox'],
-input[type='radio'] {
-  box-sizing: border-box;
-  padding: 0;
-}
-input[type='date'],
-input[type='datetime-local'],
-input[type='month'],
-input[type='time'] {
-  -webkit-appearance: listbox;
-}
-textarea {
-  overflow: auto;
-  resize: vertical;
-}
-fieldset {
-  min-width: 0;
-  padding: 0;
-  margin: 0;
-  border: 0;
-}
-legend {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  padding: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  line-height: inherit;
-  color: inherit;
-  white-space: normal;
-}
-progress {
-  vertical-align: baseline;
-}
-[type='number']::-webkit-inner-spin-button,
-[type='number']::-webkit-outer-spin-button {
-  height: auto;
-}
-[type='search'] {
-  outline-offset: -2px;
-  -webkit-appearance: none;
-}
-[type='search']::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-::-webkit-file-upload-button {
-  font: inherit;
-  -webkit-appearance: button;
-}
-output {
-  display: inline-block;
-}
-summary {
-  display: list-item;
-  cursor: pointer;
-}
-template {
-  display: none;
-}
-[hidden] {
-  display: none !important;
-}
-.wrapper {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-.footer {
-  margin-top: auto;
-}
-.container {
-  max-width: 1170px;
-  min-width: 320px;
-  width: 100%;
-  padding: 0 15px;
-  margin: 0 auto;
-  position: relative;
-}
-@function em($pixels, $context: $browser-context) {
-  @return #{$pixels/$context}em;
 }

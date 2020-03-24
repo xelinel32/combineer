@@ -1,6 +1,6 @@
-let preprocessor = 'scss';
-let fileswatch = 'html,htm,txt,json,md,woff2';
-let imageswatch = 'jpg,jpeg,png,webp,svg';
+let preprocessor = 'scss'; // choose preprocessor folder/file ext.
+let fileswatch = 'html,htm,txt,json,md,woff2,woff,eot,ttf'; // watching another file
+let imageswatch = 'jpg,jpeg,png,webp,svg'; // work with img
 
 const { src, dest, parallel, series, watch } = require('gulp');
 const scss = require('gulp-sass');
@@ -12,6 +12,8 @@ const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const del = require('del');
+const fontconvert = require('gulp-ttf2woff2');
+const sourcemaps = require('gulp-sourcemaps');
 
 // Local Server
 
@@ -22,19 +24,36 @@ function browsersync() {
   });
 }
 
+// Font Converter ttf to woff2
+
+function fconvert() {
+  return src('app/fonts/*.ttf')
+    .pipe(fontconvert())
+    .pipe(dest('app/fonts/dest'));
+}
+
 // Custom Styles & CSS Libraries
 
 function styles() {
-  return src([
-    'app/' + preprocessor + '/main.*'
-    // 'node_modules/normalize.css/normalize.css'
-  ])
+  return src('app/' + preprocessor + '/style.scss')
+    .pipe(sourcemaps.init())
     .pipe(eval(preprocessor)())
-    .pipe(concat('main.min.css'))
+    .pipe(concat('style.min.css'))
     .pipe(
-      autoprefixer({ overrideBrowserslist: ['last 2 versions'], grid: true })
+      scss({
+        outputStyle: 'compressed',
+        imagePaths: '/img/dest/'
+      })
     )
-    .pipe(cleancss({ level: { 1: { specialComments: 0 } } }))
+    .pipe(
+      autoprefixer({
+        overrideBrowserslist: ['last 2 versions'],
+        grid: true,
+        cascade: false
+      })
+    )
+    .pipe(cleancss({ level: { 2: { specialComments: 0 } }, sourceMap: true }))
+    .pipe(sourcemaps.write('./'))
     .pipe(dest('app/css'))
     .pipe(browserSync.stream());
 }
@@ -42,17 +61,20 @@ function styles() {
 // Scripts & JS Libraries
 
 function scripts() {
-  return src([
-    'node_modules/jquery/dist/jquery.min.js', // example (npm i --save-dev plugin)
-    'app/script/common.js' // end point
-  ])
+  return src(['node_modules/jquery/dist/jquery.js', 'app/script/common.js'])
+    .pipe(sourcemaps.init())
     .pipe(concat('common.min.js'))
-    .pipe(uglify()) // Minify JS (opt.)
-    .pipe(dest('app/script'))
+    .pipe(
+      uglify({
+        toplevel: true
+      })
+    ) // Minify JS (opt.)
+    .pipe(sourcemaps.write('./', { addComment: false }))
+    .pipe(dest('app/js'))
     .pipe(browserSync.stream());
 }
 
-// Image
+// Image minify
 
 function images() {
   return src('app/img/src/**/*')
@@ -62,7 +84,7 @@ function images() {
 }
 
 function cleanimg() {
-  return del('app/img/dest/**/*', { force: true });
+  return del('build/img/dest/**/*', { force: true });
 }
 
 // Watching
@@ -75,9 +97,10 @@ function startwatch() {
 }
 
 exports.browsersync = browsersync;
-exports.assets = series(cleanimg, styles, scripts, images);
+exports.assets = series(cleanimg, fconvert, styles, scripts, images);
 exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
+exports.fconvert = fconvert;
 exports.cleanimg = cleanimg;
-exports.default = parallel(images, styles, scripts, browsersync, startwatch);
+exports.default = parallel(images, fconvert, styles, scripts, browsersync, startwatch);
