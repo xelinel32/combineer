@@ -2,7 +2,7 @@
   "name": "packfordev",
   "version": "4.0.0",
   "description": "The gulp combineer for develop",
-  "private": false,
+  "private": true,
   "scripts": {
     "start": "gulp default"
   },
