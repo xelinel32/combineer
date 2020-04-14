@@ -97,10 +97,10 @@ function startwatch() {
 }
 
 exports.browsersync = browsersync;
-exports.assets = series(cleanimg, fconvert, styles, scripts, images);
+exports.assets = series(cleanimg, images, fconvert, styles, scripts);
 exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
 exports.fconvert = fconvert;
 exports.cleanimg = cleanimg;
-exports.default = parallel(images, fconvert, styles, scripts, browsersync, startwatch);
+exports.default = parallel(cleanimg, images, fconvert, styles, scripts, browsersync, startwatch);
