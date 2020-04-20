@@ -6,8 +6,9 @@
 
 <ol>
 	<li>Clone or <a href="https://github.com/xelinel32/gulp-combineer.git">Download</a> <strong>my rep</strong> from GitHub</li>
-	<li>Install Node Modules: <strong>npm i</strong></li>
-	<li>Run: <strong>gulp</strong> 😎</li>
+	<li>Install Node Modules: <strong>npm i	</strong></li>
+	<li>Run(for dev): <strong>gulp run dev</strong> 😎</li>
+	<li>Run(for build): <strong>gulp run build</strong> 😎</li>
 </ol>
 
 <h3>Included features</h3>
