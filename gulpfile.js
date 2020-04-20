@@ -12,10 +12,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const newer = require('gulp-newer');
 const del = require('del');
-const fontconvert = require('gulp-ttf2woff2');
 const sourcemaps = require('gulp-sourcemaps');
-
-// Local Server
 
 function browsersync() {
   browserSync.init({
@@ -23,16 +20,6 @@ function browsersync() {
     notify: false
   });
 }
-
-// Font Converter ttf to woff2
-
-function fconvert() {
-  return src('app/fonts/*.ttf')
-    .pipe(fontconvert())
-    .pipe(dest('app/fonts/dest'));
-}
-
-// Custom Styles & CSS Libraries
 
 function styles() {
   return src('app/' + preprocessor + '/style.scss')
@@ -58,8 +45,6 @@ function styles() {
     .pipe(browserSync.stream());
 }
 
-// Scripts & JS Libraries
-
 function scripts() {
   return src(['node_modules/jquery/dist/jquery.js', 'app/script/common.js'])
     .pipe(sourcemaps.init())
@@ -74,7 +59,6 @@ function scripts() {
     .pipe(browserSync.stream());
 }
 
-// Image minify
 
 function images() {
   return src('app/img/src/**/*')
@@ -87,8 +71,6 @@ function cleanimg() {
   return del('build/img/dest/**/*', { force: true });
 }
 
-// Watching
-
 function startwatch() {
   watch('app/' + preprocessor + '/**/*', parallel('styles'));
   watch(['app/**/*.js', '!app/js/*.min.js'], parallel('scripts'));
@@ -97,10 +79,9 @@ function startwatch() {
 }
 
 exports.browsersync = browsersync;
-exports.assets = series(cleanimg, images, fconvert, styles, scripts);
+exports.assets = series(cleanimg, images, styles, scripts);
 exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
-exports.fconvert = fconvert;
 exports.cleanimg = cleanimg;
-exports.default = parallel(cleanimg, images, fconvert, styles, scripts, browsersync, startwatch);
+exports.default = parallel(cleanimg, images, styles, scripts, browsersync, startwatch);
