@@ -9,8 +9,7 @@
   "author": "xelinel32",
   "license": "ISC",
   "dependencies": {
-    "jquery": "^3.4.1",
-    "reset-css": "^5.0.1"
+    "jquery": "^3.4.1"
   },
   "devDependencies": {
     "browser-sync": "^2.26.7",
