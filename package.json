@@ -1,12 +1,13 @@
 {
   "name": "packfordev",
-  "version": "4.0.0",
-  "description": "The gulp combineer for develop",
+  "version": "5.0.0",
+  "description": "the gulp combineer for develop",
   "private": true,
   "scripts": {
-    "start": "gulp default"
+    "dev": "gulp default",
+    "build": "gulp assets"
   },
-  "author": "xelinel32",
+  "author": "Artemy (artemsedlyar99@gmail.com)",
   "license": "ISC",
   "dependencies": {
     "jquery": "^3.4.1"
@@ -20,7 +21,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^7.1.0",
     "gulp-newer": "^1.4.0",
-    "gulp-rsync": "0.0.8",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-ttf2woff2": "^3.0.0",
