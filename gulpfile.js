@@ -1,6 +1,6 @@
-let preprocessor = 'scss'; // choose preprocessor folder/file ext.
-let fileswatch = 'html,htm,txt,json,md,woff2,woff,eot,ttf'; // watching another file
-let imageswatch = 'jpg,jpeg,png,webp,svg'; // work with img
+let preprocessor = 'scss';
+let fileswatch = 'html,txt,json,woff2,woff,eot,ttf';
+let imageswatch = 'jpg,jpeg,png,webp,svg,gif';
 
 const { src, dest, parallel, series, watch } = require('gulp');
 const scss = require('gulp-sass');
@@ -58,7 +58,6 @@ function scripts() {
     .pipe(dest('app/js'))
     .pipe(browserSync.stream());
 }
-
 
 function images() {
   return src('app/img/src/**/*')
