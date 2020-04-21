@@ -1,25 +1,28 @@
-let fileswatch = 'html,txt,json,woff2,woff,eot,ttf';
 const { src, dest, parallel, series, watch } = require('gulp');
 const sass = require('gulp-sass');
 const csso = require('gulp-csso');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const uglify = require('gulp-uglify-es').default;
+const terser = require('gulp-terser');
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 
 function browsersync() {
   browserSync.init({
-    server: { baseDir: 'app' },
+    server: { baseDir: 'src' },
     notify: false,
   });
 }
 
 function styles() {
-  return src('app/scss/style.scss')
+  return src('src/scss/style.scss')
     .pipe(concat('style.css'))
-    .pipe(sass())
+    .pipe(
+      sass({
+        outputStyle: 'compressed',
+      }).on('error', sass.logError)
+    )
     .pipe(
       autoprefixer({
         overrideBrowserslist: ['last 2 versions', 'not dead'],
@@ -34,33 +37,39 @@ function styles() {
         sourceMap: true,
       })
     )
-    .pipe(sourcemaps.write('./'))
-    .pipe(dest('app/css'))
+    .pipe(
+      sourcemaps.write('./', {
+        addComment: false,
+      })
+    )
+    .pipe(dest('src/css'))
     .pipe(browserSync.stream());
 }
 
 function scripts() {
-  return src('app/script/common.js')
+  return src('src/script/common.js')
     .pipe(sourcemaps.init())
     .pipe(concat('common.min.js'))
     .pipe(
-      uglify({
+      terser({
         toplevel: true,
       })
     )
-    .pipe(sourcemaps.write('./'))
-    .pipe(dest('app/js'))
+    .pipe(sourcemaps.write('./'), {
+      addComment: false,
+    })
+    .pipe(dest('src/js'))
     .pipe(browserSync.stream());
 }
 
 function clear() {
-  return del(['app/css/**/*', 'app/js/**/*']);
+  return del(['src/css', 'src/js']);
 }
 
 function startwatch() {
-  watch('app/scss/**/*', parallel('styles'));
-  watch(['app/**/*.js', '!app/js/*.min.js'], parallel('scripts'));
-  watch('app/**/*.{' + fileswatch + '}').on('change', browserSync.reload);
+  watch('src/scss/**/*', parallel('styles'));
+  watch(['src/script/*.js', '!src/js/*.min.js'], parallel('scripts'));
+  watch('src/**/*.html').on('change', browserSync.reload);
 }
 
 exports.browsersync = browsersync;
