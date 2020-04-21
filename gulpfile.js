@@ -8,7 +8,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const htmlmin = require('gulp-htmlmin');
-const imagemin = require('gulp-imagemin');
+const imagemin = require('gulp-image');
 const newer = require('gulp-newer');
 
 let imageswatch = 'jpg,jpeg,png,webp,svg';
@@ -97,7 +97,7 @@ function clear() {
 function startwatch() {
   watch('src/scss/**/*', parallel('styles'));
   watch(['src/script/*.js', '!src/js/*.min.js'], parallel('scripts'));
-  watch('src/**.{' + imageswatch + '}', parallel('img'));
+  watch('src/img/**.{' + imageswatch + '}', parallel('img'));
   watch('src/**.html', parallel('html')).on('change', browserSync.reload);
 }
 
