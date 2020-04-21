@@ -68,4 +68,4 @@ exports.styles = styles;
 exports.scripts = scripts;
 exports.clear = clear;
 exports.assets = series(clear, styles, scripts);
-exports.default = parallel(styles, scripts, browsersync, startwatch);
+exports.default = parallel(clear, styles, scripts, browsersync, startwatch);
