@@ -3,14 +3,19 @@ const sass = require('gulp-sass');
 const csso = require('gulp-csso');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const terser = require('gulp-terser');
+const uglify = require('gulp-uglify');
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
+const htmlmin = require('gulp-htmlmin');
+const imagemin = require('gulp-imagemin');
+const newer = require('gulp-newer');
+
+let imageswatch = 'jpg,jpeg,png,webp,svg';
 
 function browsersync() {
   browserSync.init({
-    server: { baseDir: 'src' },
+    server: { baseDir: 'dest' },
     notify: false,
   });
 }
@@ -42,39 +47,75 @@ function styles() {
         addComment: false,
       })
     )
-    .pipe(dest('src/css'))
+    .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
 function scripts() {
   return src('src/script/common.js')
     .pipe(sourcemaps.init())
-    .pipe(concat('common.min.js'))
+    .pipe(concat('common.js'))
     .pipe(
-      terser({
+      uglify({
         toplevel: true,
       })
     )
     .pipe(sourcemaps.write('./'), {
       addComment: false,
     })
-    .pipe(dest('src/js'))
+    .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
+function html() {
+  return src('src/**.html')
+    .pipe(
+      htmlmin({
+        collapseWhitespace: true,
+      })
+    )
+    .pipe(dest('dest'));
+}
+
+function img() {
+  return src('src/img/**')
+    .pipe(newer('src/img/**'))
+    .pipe(imagemin())
+    .pipe(dest('dest/img'));
+}
+
+function fonts() {
+  return src('src/fonts/*').pipe(dest('dest/fonts'));
+}
+
 function clear() {
-  return del(['src/css', 'src/js']);
+  return del('dest/**/*', {
+    force: true,
+  });
 }
 
 function startwatch() {
   watch('src/scss/**/*', parallel('styles'));
   watch(['src/script/*.js', '!src/js/*.min.js'], parallel('scripts'));
-  watch('src/**/*.html').on('change', browserSync.reload);
+  watch('src/**.{' + imageswatch + '}', parallel('img'));
+  watch('src/**.html', parallel('html')).on('change', browserSync.reload);
 }
 
 exports.browsersync = browsersync;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.clear = clear;
-exports.assets = series(clear, styles, scripts);
-exports.default = parallel(clear, styles, scripts, browsersync, startwatch);
+exports.html = html;
+exports.img = img;
+exports.fonts = fonts;
+exports.assets = series(clear, img, html, fonts, styles, scripts);
+exports.default = parallel(
+  clear,
+  img,
+  html,
+  fonts,
+  styles,
+  scripts,
+  browsersync,
+  startwatch
+);
