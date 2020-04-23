@@ -3,15 +3,20 @@ const sass = require('gulp-sass');
 const csso = require('gulp-csso');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-image');
 const newer = require('gulp-newer');
+const rollup = require('gulp-better-rollup');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const polyfill = require('gulp-babel');
 
-let imageswatch = 'jpg,jpeg,png,webp,svg';
+let imageswatch = 'jpg, jpeg, png, webp, svg';
 
 function browsersync() {
   browserSync.init({
@@ -22,7 +27,7 @@ function browsersync() {
 
 function styles() {
   return src('src/scss/style.scss')
-    .pipe(concat('style.css'))
+    .pipe(sourcemaps.init())
     .pipe(
       sass({
         outputStyle: 'compressed',
@@ -35,13 +40,13 @@ function styles() {
         cascade: false,
       })
     )
-    .pipe(sourcemaps.init())
     .pipe(
       csso({
         comments: false,
         sourceMap: true,
       })
     )
+    .pipe(concat('style.css'))
     .pipe(
       sourcemaps.write('./', {
         addComment: false,
@@ -54,12 +59,18 @@ function styles() {
 function scripts() {
   return src('src/script/common.js')
     .pipe(sourcemaps.init())
-    .pipe(concat('common.js'))
+    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
+    .pipe(
+      polyfill({
+        presets: ['@babel/env'],
+      })
+    )
     .pipe(
       uglify({
         toplevel: true,
       })
     )
+    .pipe(concat('common.js'))
     .pipe(sourcemaps.write('./'), {
       addComment: false,
     })
@@ -109,13 +120,4 @@ exports.html = html;
 exports.img = img;
 exports.fonts = fonts;
 exports.assets = series(clear, img, html, fonts, styles, scripts);
-exports.default = parallel(
-  clear,
-  img,
-  html,
-  fonts,
-  styles,
-  scripts,
-  browsersync,
-  startwatch
-);
+exports.default = parallel(clear, img, html, fonts, styles, scripts, browsersync, startwatch);
