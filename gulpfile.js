@@ -1,6 +1,6 @@
 const { src, dest, parallel, series, watch } = require('gulp');
 const sass = require('gulp-sass');
-const csso = require('gulp-csso');
+const cleancss = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
 const uglify = require('gulp-uglify-es').default;
@@ -10,11 +10,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-image');
 const newer = require('gulp-newer');
-const rollup = require('gulp-better-rollup');
-const babel = require('rollup-plugin-babel');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const polyfill = require('gulp-babel');
+const fileinclude = require('gulp-file-include');
 
 let imageswatch = 'jpg, jpeg, png, webp, svg';
 
@@ -26,7 +22,10 @@ function browsersync() {
 }
 
 function styles() {
-  return src('src/scss/style.scss')
+  return src([
+    'node_modules/normalize.css/normalize.css',
+    'src/scss/style.scss',
+  ])
     .pipe(sourcemaps.init())
     .pipe(
       sass({
@@ -35,14 +34,12 @@ function styles() {
     )
     .pipe(
       autoprefixer({
-        overrideBrowserslist: ['last 2 versions', 'not dead'],
-        grid: true,
-        cascade: false,
+        overrideBrowserslist: ['>0.2%', 'not dead', 'not op_mini all'],
       })
     )
     .pipe(
-      csso({
-        comments: false,
+      cleancss({
+        level: 2,
         sourceMap: true,
       })
     )
@@ -57,20 +54,16 @@ function styles() {
 }
 
 function scripts() {
-  return src('src/script/common.js')
+  return src([
+    'node_modules/jquery/dist/jquery.js'
+  ])
     .pipe(sourcemaps.init())
-    .pipe(rollup({ plugins: [babel(), resolve(), commonjs()] }, 'umd'))
-    .pipe(
-      polyfill({
-        presets: ['@babel/env'],
-      })
-    )
     .pipe(
       uglify({
         toplevel: true,
       })
     )
-    .pipe(concat('common.js'))
+    .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write('./'), {
       addComment: false,
     })
@@ -81,8 +74,14 @@ function scripts() {
 function html() {
   return src('src/**.html')
     .pipe(
+      fileinclude({
+        prefix: '@@'
+      })
+    )
+    .pipe(
       htmlmin({
         collapseWhitespace: true,
+        removeComments: true,
       })
     )
     .pipe(dest('dest'));
@@ -100,16 +99,14 @@ function fonts() {
 }
 
 function clear() {
-  return del('dest/**/*', {
-    force: true,
-  });
+  return del('dest/**/*');
 }
 
 function startwatch() {
-  watch('src/scss/**/*', parallel('styles'));
+  watch('src/scss/**/*.scss', parallel('styles'));
   watch(['src/script/*.js', '!src/js/*.min.js'], parallel('scripts'));
-  watch('src/img/**.{' + imageswatch + '}', parallel('img'));
-  watch('src/**.html', parallel('html')).on('change', browserSync.reload);
+  watch('src/img/*.{' + imageswatch + '}', parallel('img'));
+  watch('src/*.html', parallel('html')).on('change', browserSync.reload);
 }
 
 exports.browsersync = browsersync;
