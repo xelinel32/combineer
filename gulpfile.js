@@ -11,13 +11,15 @@ const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-image');
 const newer = require('gulp-newer');
 const fileinclude = require('gulp-file-include');
+const babel = require('gulp-babel');
 
 let imageswatch = 'jpg, jpeg, png, webp, svg';
 
 function browsersync() {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: false,
+    notify: true,
+    port: 666 // yes, i'm not are satana
   });
 }
 
@@ -44,11 +46,7 @@ function styles() {
       })
     )
     .pipe(concat('style.css'))
-    .pipe(
-      sourcemaps.write('./', {
-        addComment: false,
-      })
-    )
+    .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
@@ -58,15 +56,16 @@ function scripts() {
     'node_modules/jquery/dist/jquery.js'
   ])
     .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['@babel/env']
+    }))
     .pipe(
       uglify({
         toplevel: true,
       })
     )
     .pipe(concat('bundle.js'))
-    .pipe(sourcemaps.write('./'), {
-      addComment: false,
-    })
+    .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
@@ -104,7 +103,7 @@ function clear() {
 
 function startwatch() {
   watch('src/scss/**/*.scss', parallel('styles'));
-  watch(['src/script/*.js', '!src/js/*.min.js'], parallel('scripts'));
+  watch('src/script/**/*.js', parallel('scripts'));
   watch('src/img/*.{' + imageswatch + '}', parallel('img'));
   watch('src/*.html', parallel('html')).on('change', browserSync.reload);
 }
