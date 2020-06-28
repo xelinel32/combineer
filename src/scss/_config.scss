@@ -17,7 +17,7 @@ body {
   color: #000;
   font-weight: normal;
   font-style: normal;
-  font-family: $globalfont;
+  font-family: $globalfont !important;
   font-size: 100%;
 }
 img {

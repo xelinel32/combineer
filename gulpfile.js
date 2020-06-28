@@ -7,25 +7,20 @@ const uglify = require('gulp-uglify-es').default;
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
-const htmlmin = require('gulp-htmlmin');
-const imagemin = require('gulp-image');
-const newer = require('gulp-newer');
 const fileinclude = require('gulp-file-include');
 const babel = require('gulp-babel');
-
-let imageswatch = 'jpg, jpeg, png, webp, svg';
 
 function browsersync() {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: true,
-    port: 666 // yes, i'm not are satana
+    notify: false,
+    port: 3000
   });
 }
 
 function styles() {
   return src([
-    'node_modules/normalize.css/normalize.css',
+    'node_modules/reset-css/reset.css',
     'src/scss/style.scss',
   ])
     .pipe(sourcemaps.init())
@@ -36,7 +31,7 @@ function styles() {
     )
     .pipe(
       autoprefixer({
-        overrideBrowserslist: ['>0.2%', 'not dead', 'not op_mini all'],
+        overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead'],
       })
     )
     .pipe(
@@ -53,7 +48,8 @@ function styles() {
 
 function scripts() {
   return src([
-    'node_modules/jquery/dist/jquery.js'
+    'node_modules/jquery/dist/jquery.js',
+    'src/script/common.js'
   ])
     .pipe(sourcemaps.init())
     .pipe(babel({
@@ -70,31 +66,16 @@ function scripts() {
     .pipe(browserSync.stream());
 }
 
-function html() {
-  return src('src/**.html')
-    .pipe(
-      fileinclude({
-        prefix: '@@'
-      })
-    )
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true,
-      })
-    )
-    .pipe(dest('dest'));
-}
-
-function img() {
-  return src('src/img/**')
-    .pipe(newer('src/img/**'))
-    .pipe(imagemin())
-    .pipe(dest('dest/img'));
-}
-
-function fonts() {
+function fontPack() {
   return src('src/fonts/*').pipe(dest('dest/fonts'));
+}
+
+function imgPack(){
+  return src('src/img/**').pipe(dest('dest/img'))  
+}
+
+function htmlFileInclude(){
+    return src('src/**.html').pipe(fileinclude({prefix: '@@'})).pipe(dest('dest'))
 }
 
 function clear() {
@@ -103,17 +84,20 @@ function clear() {
 
 function startwatch() {
   watch('src/scss/**/*.scss', parallel('styles'));
-  watch('src/script/**/*.js', parallel('scripts'));
-  watch('src/img/*.{' + imageswatch + '}', parallel('img'));
-  watch('src/*.html', parallel('html')).on('change', browserSync.reload);
+  watch('src/script/*.js', parallel('scripts'));
+  watch('src/img/*', parallel('imgPack'));
+  watch('src/*.html', parallel('htmlFileInclude')).on(
+    'change',
+    browserSync.reload
+  );
 }
 
 exports.browsersync = browsersync;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.clear = clear;
-exports.html = html;
-exports.img = img;
-exports.fonts = fonts;
-exports.assets = series(clear, img, html, fonts, styles, scripts);
-exports.default = parallel(clear, img, html, fonts, styles, scripts, browsersync, startwatch);
+exports.fontPack = fontPack;
+exports.htmlFileInclude = htmlFileInclude;
+exports.imgPack = imgPack;
+exports.assets = series(clear, fontPack, imgPack ,htmlFileInclude, styles, scripts);
+exports.default = parallel(clear, fontPack, imgPack ,htmlFileInclude, styles, scripts, browsersync, startwatch);
