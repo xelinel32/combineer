@@ -6,6 +6,8 @@ const browserSync = require('browser-sync').create();
 const uglify = require('gulp-uglify-es').default;
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
+const imagemin = require('gulp-image');
+const newer = require('gulp-newer');
 const sourcemaps = require('gulp-sourcemaps');
 const fileinclude = require('gulp-file-include');
 const babel = require('gulp-babel');
@@ -13,7 +15,7 @@ const babel = require('gulp-babel');
 function browsersync() {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: false,
+    notify: true,
     port: 3000
   });
 }
@@ -71,7 +73,10 @@ function fontPack() {
 }
 
 function imgPack(){
-  return src('src/img/**').pipe(dest('dest/img'))  
+  return src('src/img/**')
+  .pipe(newer('dest/img/**'))
+  .pipe(imagemin())
+  .pipe(dest('dest/img'))  
 }
 
 function htmlFileInclude(){
