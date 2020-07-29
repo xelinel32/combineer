@@ -3,29 +3,28 @@ const sass = require('gulp-sass');
 const cleancss = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const uglify = require('gulp-uglify-es').default;
+const terser = require('gulp-terser')
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
-const sourcemaps = require('gulp-sourcemaps');
-const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-image');
 const newer = require('gulp-newer');
+const sourcemaps = require('gulp-sourcemaps');
 const fileinclude = require('gulp-file-include');
 const babel = require('gulp-babel');
 
-let imageswatch = 'jpg, jpeg, png, webp, svg';
-
-function browsersync() {
+const browsersync = () => {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: true,
-    port: 666 // yes, i'm not are satana
+    notify: false,
+    port: 3000,
+    open: false,
+    cors: true
   });
 }
 
-function styles() {
+const styles = () => {
   return src([
-    'node_modules/normalize.css/normalize.css',
+    'node_modules/reset-css/reset.css',
     'src/scss/style.scss',
   ])
     .pipe(sourcemaps.init())
@@ -36,7 +35,7 @@ function styles() {
     )
     .pipe(
       autoprefixer({
-        overrideBrowserslist: ['>0.2%', 'not dead', 'not op_mini all'],
+        overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead'],
       })
     )
     .pipe(
@@ -45,75 +44,66 @@ function styles() {
         sourceMap: true,
       })
     )
-    .pipe(concat('style.css'))
+    .pipe(concat('style.min.css'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
-function scripts() {
+const scripts = () => {
   return src([
-    'node_modules/jquery/dist/jquery.js'
+    'src/script/common.js'
   ])
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['@babel/env']
     }))
     .pipe(
-      uglify({
+      terser({
         toplevel: true,
       })
     )
-    .pipe(concat('bundle.js'))
+    .pipe(concat('bundle.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
-function html() {
-  return src('src/**.html')
-    .pipe(
-      fileinclude({
-        prefix: '@@'
-      })
-    )
-    .pipe(
-      htmlmin({
-        collapseWhitespace: true,
-        removeComments: true,
-      })
-    )
-    .pipe(dest('dest'));
-}
-
-function img() {
-  return src('src/img/**')
-    .pipe(newer('src/img/**'))
-    .pipe(imagemin())
-    .pipe(dest('dest/img'));
-}
-
-function fonts() {
+const fontPack = () => {
   return src('src/fonts/*').pipe(dest('dest/fonts'));
 }
 
-function clear() {
+const imgPack = () =>{
+  return src('src/img/**')
+  .pipe(newer('dest/img/**'))
+  .pipe(imagemin())
+  .pipe(dest('dest/img'))  
+}
+
+const htmlFileInclude = () => {
+    return src('src/**.html').pipe(fileinclude({prefix: '@@'})).pipe(dest('dest'))
+}
+
+const clear = () => {
   return del('dest/**/*');
 }
 
-function startwatch() {
+const startwatch = () => {
   watch('src/scss/**/*.scss', parallel('styles'));
-  watch('src/script/**/*.js', parallel('scripts'));
-  watch('src/img/*.{' + imageswatch + '}', parallel('img'));
-  watch('src/*.html', parallel('html')).on('change', browserSync.reload);
+  watch('src/script/*.js', parallel('scripts'));
+  watch('src/img/*', parallel('imgPack'));
+  watch('src/*.html', parallel('htmlFileInclude')).on(
+    'change',
+    browserSync.reload
+  );
 }
 
 exports.browsersync = browsersync;
 exports.styles = styles;
 exports.scripts = scripts;
 exports.clear = clear;
-exports.html = html;
-exports.img = img;
-exports.fonts = fonts;
-exports.assets = series(clear, img, html, fonts, styles, scripts);
-exports.default = parallel(clear, img, html, fonts, styles, scripts, browsersync, startwatch);
+exports.fontPack = fontPack;
+exports.htmlFileInclude = htmlFileInclude;
+exports.imgPack = imgPack;
+exports.build = series(clear, fontPack, imgPack, htmlFileInclude, styles, scripts);
+exports.dev = parallel(clear, fontPack, imgPack, htmlFileInclude, styles, scripts, browsersync, startwatch);
