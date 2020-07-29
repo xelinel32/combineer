@@ -4,18 +4,17 @@
   "description": "the gulp combineer for develop",
   "private": true,
   "scripts": {
-    "dev": "gulp default",
-    "build": "gulp assets"
+    "serve": "gulp dev",
+    "build": "gulp build"
   },
   "author": "Artemy (artemsedlyar99@gmail.com)",
   "license": "ISC",
   "dependencies": {
-    "jquery": "3.5.1",
-    "reset-css": "5.0.1"
+    "reset-css": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
@@ -28,6 +27,6 @@
     "gulp-newer": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify-es": "^2.0.0"
+    "gulp-terser": "^1.2.1"
   }
 }

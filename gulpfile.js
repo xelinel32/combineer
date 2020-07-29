@@ -3,7 +3,7 @@ const sass = require('gulp-sass');
 const cleancss = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const uglify = require('gulp-uglify-es').default;
+const terser = require('gulp-terser')
 const autoprefixer = require('gulp-autoprefixer');
 const del = require('del');
 const imagemin = require('gulp-image');
@@ -12,15 +12,17 @@ const sourcemaps = require('gulp-sourcemaps');
 const fileinclude = require('gulp-file-include');
 const babel = require('gulp-babel');
 
-function browsersync() {
+const browsersync = () => {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: true,
-    port: 3000
+    notify: false,
+    port: 3000,
+    open: false,
+    cors: true
   });
 }
 
-function styles() {
+const styles = () => {
   return src([
     'node_modules/reset-css/reset.css',
     'src/scss/style.scss',
@@ -42,15 +44,14 @@ function styles() {
         sourceMap: true,
       })
     )
-    .pipe(concat('style.css'))
+    .pipe(concat('style.min.css'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
-function scripts() {
+const scripts = () => {
   return src([
-    'node_modules/jquery/dist/jquery.js',
     'src/script/common.js'
   ])
     .pipe(sourcemaps.init())
@@ -58,36 +59,36 @@ function scripts() {
       presets: ['@babel/env']
     }))
     .pipe(
-      uglify({
+      terser({
         toplevel: true,
       })
     )
-    .pipe(concat('bundle.js'))
+    .pipe(concat('bundle.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream());
 }
 
-function fontPack() {
+const fontPack = () => {
   return src('src/fonts/*').pipe(dest('dest/fonts'));
 }
 
-function imgPack(){
+const imgPack = () =>{
   return src('src/img/**')
   .pipe(newer('dest/img/**'))
   .pipe(imagemin())
   .pipe(dest('dest/img'))  
 }
 
-function htmlFileInclude(){
+const htmlFileInclude = () => {
     return src('src/**.html').pipe(fileinclude({prefix: '@@'})).pipe(dest('dest'))
 }
 
-function clear() {
+const clear = () => {
   return del('dest/**/*');
 }
 
-function startwatch() {
+const startwatch = () => {
   watch('src/scss/**/*.scss', parallel('styles'));
   watch('src/script/*.js', parallel('scripts'));
   watch('src/img/*', parallel('imgPack'));
@@ -104,5 +105,5 @@ exports.clear = clear;
 exports.fontPack = fontPack;
 exports.htmlFileInclude = htmlFileInclude;
 exports.imgPack = imgPack;
-exports.assets = series(clear, fontPack, imgPack ,htmlFileInclude, styles, scripts);
-exports.default = parallel(clear, fontPack, imgPack ,htmlFileInclude, styles, scripts, browsersync, startwatch);
+exports.build = series(clear, fontPack, imgPack, htmlFileInclude, styles, scripts);
+exports.dev = parallel(clear, fontPack, imgPack, htmlFileInclude, styles, scripts, browsersync, startwatch);
