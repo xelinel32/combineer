@@ -1,14 +1,14 @@
 {
-  "name": "packfordev",
+  "name": "gulp",
   "version": "5.0.0",
-  "description": "the gulp combineer for develop",
+  "description": "The gulp builder for generate static template",
   "private": true,
+  "author": "Artemy (artemsedlyar99@gmail.com)",
+  "license": "ISC",
   "scripts": {
     "serve": "gulp dev",
     "build": "gulp build"
   },
-  "author": "Artemy (artemsedlyar99@gmail.com)",
-  "license": "ISC",
   "dependencies": {
     "reset-css": "^5.0.1"
   },
@@ -23,7 +23,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-file-include": "^2.2.2",
-    "gulp-image": "^6.1.0",
+    "gulp-imagemin": "7.1.0",
     "gulp-newer": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",

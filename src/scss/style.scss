@@ -1,2 +1,15 @@
 @import 'config';
+@import './blocks/header';
+body {
+  height: 200vh;
+}
+#text {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid;
+  background-color: brown;
+}
+.gg {
+  height: 400px;
+}
 @import 'grid';
