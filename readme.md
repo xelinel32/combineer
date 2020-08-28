@@ -1,4 +1,4 @@
-<h1>My gulp v 5.0.0</h1>
+<h1>My gulp v6.0.0</h1>
 
 <h3>How to use 👀</h3>
 
