@@ -10,12 +10,14 @@ const imagemin = require('gulp-imagemin')
 const newer = require('gulp-newer')
 const sourcemaps = require('gulp-sourcemaps')
 const fileinclude = require('gulp-file-include')
-const babel = require('gulp-babel')
+// const babel = require('gulp-babel')
+const webpack = require('webpack')
+const webpackStream = require('webpack-stream')
 
 const browsersync = () => {
   browserSync.init({
     server: { baseDir: 'dest' },
-    notify: false,
+    notify: true,
     port: 3000,
     open: false,
     cors: true,
@@ -23,7 +25,7 @@ const browsersync = () => {
 }
 
 const styles = () => {
-  return src(['node_modules/reset-css/reset.css', 'src/scss/style.scss'])
+  return src('src/scss/style.scss')
     .pipe(sourcemaps.init())
     .pipe(
       sass({
@@ -48,22 +50,39 @@ const styles = () => {
 }
 
 const scripts = () => {
-  return src([
-    // lib...
-    'src/script/common.js',
-  ])
-    .pipe(sourcemaps.init())
+  return src('src/script/common.js')
     .pipe(
-      babel({
-        presets: ['@babel/env'],
+      webpackStream({
+        mode: 'development',
+        output: {
+          filename: 'bundle.min.js',
+        },
+        module: {
+          rules: [
+            {
+              test: /\.m?js$/,
+              exclude: /(node_modules|bower_components)/,
+              use: {
+                loader: 'babel-loader',
+                options: {
+                  presets: ['@babel/preset-env'],
+                },
+              },
+            },
+          ],
+        },
       })
     )
+    .on('error', function (err) {
+      console.error('WEBPACK ERROR', err)
+      this.emit('end')
+    })
+    .pipe(sourcemaps.init())
     .pipe(
       terser({
         toplevel: true,
       })
     )
-    .pipe(concat('bundle.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream())
