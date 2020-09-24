@@ -1,12 +1,12 @@
-<h1>My gulp v6.0.0</h1>
+# My gulp v6.0.1
 
-<h3>How to use 👀</h3>
+## How to use 👀
 
-<pre>git clone https://github.com/xelinel32/gulp-combineer.git</pre>
+`git clone https://github.com/xelinel32/gulp-combineer.git`
 
-<ol>
-	<li>Clone or <a href="https://github.com/xelinel32/gulp-combineer.git">Download</a> <strong>my rep</strong> from GitHub</li>
-	<li>Install Node Modules: <strong>npm i	</strong></li>
-	<li>Run(for dev): <strong>gulp run serve</strong> 😎</li>
-	<li>Run(for build): <strong>gulp run build</strong> 😎</li>
-</ol>
+## Feature
+1. Clone or <a href="https://github.com/xelinel32/gulp-combineer.git">Download</a> <strong>my rep</strong> from GitHub
+2. Install Node Modules: **npm i**
+3. Run(for dev): **gulp run serve** 😎
+4. Run(for build): **gulp run build** 😎
+
