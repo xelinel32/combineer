@@ -10,8 +10,6 @@ const imagemin = require('gulp-imagemin')
 const newer = require('gulp-newer')
 const sourcemaps = require('gulp-sourcemaps')
 const fileinclude = require('gulp-file-include')
-// const babel = require('gulp-babel')
-const webpack = require('webpack')
 const webpackStream = require('webpack-stream')
 
 const browsersync = () => {
