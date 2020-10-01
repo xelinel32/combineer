@@ -11,6 +11,7 @@ const newer = require('gulp-newer')
 const sourcemaps = require('gulp-sourcemaps')
 const fileinclude = require('gulp-file-include')
 const webpackStream = require('webpack-stream')
+const svgSprite = require('gulp-svg-sprite')
 
 const browsersync = () => {
   browserSync.init({
@@ -91,15 +92,34 @@ const fontPack = () => {
 }
 
 const imgPack = () => {
-  return src('src/assets/*')
+  return src([
+    'src/assets/*.ico',
+    'src/assets/*.png',
+    'src/assets/*.jpeg',
+    'src/assets/*.jpg',
+  ])
     .pipe(newer('dest/img/*'))
     .pipe(imagemin())
     .pipe(dest('dest/img'))
 }
 
+const svgSprites = () => {
+  return src('src/assets/*.svg')
+    .pipe(
+      svgSprite({
+        mode: {
+          stack: {
+            sprite: '../sprite.svg', //sprite file name
+          },
+        },
+      })
+    )
+    .pipe(dest('dest/img'))
+}
+
 const htmlFileInclude = () => {
   return src('src/*.html')
-    .pipe(fileinclude({ prefix: '@@' }))
+    .pipe(fileinclude({ prefix: '@@', basepath: '@file' }))
     .pipe(dest('dest'))
 }
 
@@ -111,7 +131,7 @@ const startwatch = () => {
   watch('src/scss/**/*.scss', parallel('styles'))
   watch('src/script/*.js', parallel('scripts'))
   watch('src/assets/*', parallel('imgPack'))
-  watch('src/*.html', parallel('htmlFileInclude')).on(
+  watch(['src/*.html', 'src/parts/*.html'], parallel('htmlFileInclude')).on(
     'change',
     browserSync.reload
   )
@@ -128,6 +148,7 @@ exports.build = series(
   clear,
   fontPack,
   imgPack,
+  svgSprites,
   htmlFileInclude,
   styles,
   scripts
@@ -136,6 +157,7 @@ exports.dev = parallel(
   clear,
   fontPack,
   imgPack,
+  svgSprites,
   htmlFileInclude,
   styles,
   scripts,

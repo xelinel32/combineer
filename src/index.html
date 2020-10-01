@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="style.min.css" />
   </head>
   <body>
-    <div class="wrapper"></div>
+    <div class="wrapper">
+      @@include('parts/header.html')
+      <main class="main"></main>
+      @@include('parts/footer.html')
+    </div>
     <script src="bundle.min.js"></script>
   </body>
 </html>

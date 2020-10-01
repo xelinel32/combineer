@@ -1,6 +1,8 @@
 @import '../../node_modules/reset-css/sass/reset';
 @import 'mixins/mixin';
+
 $globalfont: 'Roboto', sans-serif; // global font
+
 @include font('Roboto', bold, 700, 'fonts/roboto-bold-webfont.woff2');
 @include font('Roboto', italic, 700, 'fonts/roboto-bolditalic-webfont.woff2');
 @include font('Roboto', italic, 400, 'fonts/roboto-italic-webfont.woff2');
@@ -24,18 +26,12 @@ img {
 }
 .container {
   max-width: 1170px;
-  width: 100%;
-  height: 100%;
-  min-width: 320px;
   padding: 0 15px;
   margin: 0 auto;
   position: relative;
 }
 .wrapper {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 .footer {
   margin-top: auto;
