@@ -3,7 +3,7 @@ const sass = require('gulp-sass')
 const cleancss = require('gulp-clean-css')
 const concat = require('gulp-concat')
 const browserSync = require('browser-sync').create()
-const terser = require('gulp-terser')
+const uglify = require('gulp-uglify')
 const autoprefixer = require('gulp-autoprefixer')
 const del = require('del')
 const imagemin = require('gulp-imagemin')
@@ -77,11 +77,7 @@ const scripts = () => {
       this.emit('end')
     })
     .pipe(sourcemaps.init())
-    .pipe(
-      terser({
-        toplevel: true,
-      })
-    )
+    .pipe(uglify())
     .pipe(sourcemaps.write('./'))
     .pipe(dest('dest'))
     .pipe(browserSync.stream())
