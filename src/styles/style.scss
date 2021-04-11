@@ -1,0 +1,15 @@
+@import 'vars';
+
+// Mixins
+@import 'mixins/font-includes';
+@import 'mixins/font-converter';
+@import 'mixins/hardware';
+@import 'mixins/media-queries';
+@import 'mixins/truncate';
+
+// Base template styles
+@import '_basic';
+
+// Template component
+@import 'components/header';
+@import 'components/footer';

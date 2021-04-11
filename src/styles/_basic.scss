@@ -1,12 +1,10 @@
-@import '../../node_modules/reset-css/sass/reset';
-@import 'mixins/mixin';
+@import '../../node_modules/reset-css/sass/reset'; // style reset
 
-$globalfont: 'Roboto', sans-serif; // global font
+@include font(var(--global-font), bold, 700, 'fonts/roboto-bold-webfont.woff2');
+@include font(var(--global-font), italic, 700, 'fonts/roboto-bolditalic-webfont.woff2');
+@include font(var(--global-font), italic, 400, 'fonts/roboto-italic-webfont.woff2');
+@include font(var(--global-font), normal, 400, 'fonts/roboto-regular-webfont.woff2');
 
-@include font('Roboto', bold, 700, 'fonts/roboto-bold-webfont.woff2');
-@include font('Roboto', italic, 700, 'fonts/roboto-bolditalic-webfont.woff2');
-@include font('Roboto', italic, 400, 'fonts/roboto-italic-webfont.woff2');
-@include font('Roboto', normal, 400, 'fonts/roboto-regular-webfont.woff2');
 *,
 *::after,
 *::before {
@@ -16,31 +14,38 @@ $globalfont: 'Roboto', sans-serif; // global font
   outline: none;
   font-weight: normal;
 }
+
 body {
-  font-family: $globalfont;
+  font-family: var(--global-font);
 }
+
 img {
   display: block;
   max-width: 100%;
   height: auto;
 }
+
 .container {
   max-width: 1170px;
   padding: 0 15px;
   margin: 0 auto;
   position: relative;
 }
+
 .wrapper {
   overflow: hidden;
 }
+
 .footer {
   margin-top: auto;
 }
+
 a {
   text-decoration: none;
   color: #000;
   display: inline-block;
 }
+
 button,
 input,
 textarea {

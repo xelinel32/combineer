@@ -7,7 +7,10 @@
   "license": "ISC",
   "scripts": {
     "serve": "gulp dev",
-    "build": "gulp build"
+    "build": "gulp build",
+    "lint:js": "eslint **/*.js --ignore-path .gitignore",
+    "lint:style": "stylelint **/*.scss --ignore-path .gitignore",
+    "lint": "npm run lint:js && npm run lint:style"
   },
   "dependencies": {
     "reset-css": "^5.0.1"
@@ -18,6 +21,9 @@
     "babel-loader": "8.1.0",
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.3.0",
@@ -29,6 +35,9 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-svg-sprite": "1.5.0",
     "gulp-uglify": "3.0.2",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-scss": "^3.19.0",
     "webpack": "4.44.2",
     "webpack-stream": "6.1.0"
   }
